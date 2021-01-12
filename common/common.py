@@ -18,19 +18,12 @@ class api_config(object):
 class ymjt(object):
 
     url='http://ymjt.jcebid.com'
-    # 版本号
-    version='/servicezh/startup/version?_=1609309805312'
-    # 新增项目
-    insert_project='/servicezh/api/project/add'
-    # 查看项目
-    select_project='/servicezh/api/project/list'
-    # 删除项目
-    delete_project='/servicezh/api/project/remove'
-    # 查询招标项目
-    select_Bidding_project='/servicezh/api/instance/list'
 
-    # 查看开标项目
-    select_Bidding='http://zts.kb.jcebid.com/tender/tenderList?1609732637764&pageNum=1&pageSize=10&_=1609732637582'
-
-
-    username='http://zts.ztb.jcebid.com/integrated_management_system_api/api/user/list?pageNum=1&pageSize=10&_=1609752126293'
+    # 供应商列表查询
+    supplier_list='/base-library/service/api/library/supplierPage'
+    # 供应商黑名单列表查询
+    Supplier_blacklist='/base-library/service/api/library/supplierBlackPage'
+    # 供应商审核列表查询
+    Supplier_audit='/base-library/service/api/library/supplierPageAudit'
+    # 查看单一供应商信息
+    single_supplier='/base-library/service/api/library/findSupplierInfoById?'

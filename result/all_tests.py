@@ -1,6 +1,4 @@
 import unittest
-from common import HTMLTestRunner
-
 
 # 测试用例存放路径
 case_path = r'D:\Python\cloud_api\testcase'
@@ -16,14 +14,3 @@ def get_allcase():
             testunit.addTests(case)
     return testunit
 
-allcasenames = get_allcase()
-filename = 'report\\result.html'
-fp = open(filename,'wb')
-runner=HTMLTestRunner.HTMLTestRunner(
-     stream=fp,
-     title=u'小财训练营后台题库管理模块、考试管理模块接口测试报告',
-     description=u'测试用例执行结果')
-
-runner.run(allcasenames)
-
-fp.close()

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2020/12/21
 # @Author  : xiaoyunlong
-from url_api.bidding import Oalogin
+
 from models.db_con import Db_Connection
 import unittest
 import time
@@ -26,5 +26,6 @@ class Mycount(unittest.TestCase):
         pass
     def tearDown(self):  #用例的后置，执行每条用例后要执行的东西
         pass
-
+    def test(self):
+        pass
 
