@@ -1,7 +1,7 @@
 import unittest
 
 # 测试用例存放路径
-case_path = r'D:\Python\cloud_api\testcase'
+case_path = r'F:\python\http_api\testcase'
 
 # 获取所有测试用例
 def get_allcase():

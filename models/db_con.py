@@ -2,19 +2,20 @@
 # @Time    : 2020/12/21
 # @Author  : xiaoyunlong
 
-import main_init
 from sqlalchemy import create_engine
 import pandas as pd
 import pymysql
 
-config = main_init.Init_Config()
-
 
 class Db_Connection(object):
-    def __init__(self):
+    def __init__(self,ip,db,username,password):
+        self.ip=ip
+        self.db = db
+        self.username = username
+        self.password = password
         self.mqlengine = create_engine(
-            f"mysql+pymysql://{config.msqusername}:{config.msqpassword}@{config.msqlserver}/{config.msqdb}",
-            encoding=config.msqcoding)
+            f"mysql+pymysql://{username}:{password}@{ip}/{db}",
+            encoding='utf-8')
 
     def obtain_mysql_df(self, sql):
         try:
@@ -37,10 +38,10 @@ class Db_Connection(object):
 
     def commit_sql(self, sql):
         try:
-            conn = pymysql.connect(host=config.msqlserver,
-                                   user=config.msqusername,
-                                   password=config.msqpassword,
-                                   db=config.msqdb,
+            conn = pymysql.connect(host=self.ip,
+                                   user=self.username,
+                                   password=self.password,
+                                   db=self.db,
                                    # charset=config.msqcoding,
                                    )
             cursor = conn.cursor()
@@ -55,10 +56,10 @@ class Db_Connection(object):
 
     def all(self, sql):
         try:
-            conn = pymysql.connect(host=config.msqlserver,
-                                   user=config.msqusername,
-                                   password=config.msqpassword,
-                                   db=config.msqdb,
+            conn = pymysql.connect(host=self.ip,
+                                   user=self.username,
+                                   password=self.password,
+                                   db=self.db,
                                    # charset=config.msqcoding,
                                    )
             cursor = conn.cursor()
@@ -72,11 +73,11 @@ class Db_Connection(object):
 
     def all_chall(self,sql,params):
         try:
-            conn = pymysql.connect(host=config.msqlserver,
-                                   user=config.msqusername,
-                                   password=config.msqpassword,
-                                   db=config.msqdb,
-                                   # charset=config.msqcoding,
+            conn = pymysql.connect(host=self.ip,
+                                   user=self.username,
+                                   password=self.password,
+                                   db=self.db,
+                                   # charset='utf-8',
                                    )
             cursor = conn.cursor()
             cursor.execute(sql,params)
