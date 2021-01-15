@@ -1,0 +1,6 @@
+-i https://mirrors.aliyun.com/pypi/simple
+grequests==0.6.0
+requests==2.18.4
+sqlalchemy==1.2.7
+pymysql==0.10.1
+pandas==0.23.0
