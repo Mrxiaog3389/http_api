@@ -13,9 +13,7 @@ class Db_Connection(object):
         self.db = db
         self.username = username
         self.password = password
-        self.mqlengine = create_engine(
-            f"mysql+pymysql://{username}:{password}@{ip}/{db}",
-            encoding='utf-8')
+        self.mqlengine = create_engine(f"mysql+pymysql://{username}:{password}@{ip}/{db}",encoding='utf-8')
 
     def obtain_mysql_df(self, sql):
         try:

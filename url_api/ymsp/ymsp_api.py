@@ -4,6 +4,7 @@
 import requests,json,grequests,time,datetime,uuid
 from common.common import api_config,ymjt
 from url_api.ymsp.parameters import parame
+from urllib.parse import quote
 
 class Oalogin():
 
@@ -307,11 +308,71 @@ class Oalogin():
         return res_list
 
 
+    def Record_plan_view(self,pageNum,pageSize,applicationOrgan=None,organizationalType=None,
+                         capitalSourceId=None,organizationalMode=None,organizationalOrgan=None):
+        """获取备案计划信息 获取项目备案信息 获取控制价备案信息 获取中标通知书备案查看"""
+        parms=f"pageNum={pageNum}&pageSize={pageSize}&identity=AGENCY{quote(',', 'utf-8')}TENDEREE&projectName="
+        organizationalType1=f'&organizationalType={organizationalType}&capitalSourceId={capitalSourceId}&organizationalMode={organizationalMode}&organizationalOrgan={organizationalOrgan}&applicationOrgan={applicationOrgan}'
+        times=f'&startTime=&endTime=&_={int(time.mktime(datetime.datetime.now().timetuple()) * 1000)}'
 
-# o = Oalogin()
-# o.project_supplierPage()
-# o.supplier_update_submit_OTHER()
-# o.supplier_update_submit_HG()
-# o.supplier_update_preservation('81d97224-56d1-11eb-b718-a87eeafcaf9a')
-# o.update_submit('2a7ade00-567f-11eb-bbbc-a87eeafcaf9a')
-# o.login('apisxy','123456')
+        data = {'pageNum': pageNum, 'pageSize': pageSize,
+                'identity': f"AGENCY{quote(',', 'utf-8')}TENDEREE", 'projectName': '',
+                'applicationUnit':applicationOrgan,
+                'organizationUnit': organizationalMode,
+                'organizationForm': organizationalOrgan,
+                'startTime': '',
+                'endTime': ''}
+
+        data1 = {'pageNum': pageNum, 'pageSize': pageSize,
+                'identity': f"AGENCY{quote(',', 'utf-8')}TENDEREE", 'projectName': '',
+                'applicationUnit': applicationOrgan,
+                'organizationPattern': '',
+                'capitalSource': '',
+                'organizationForm': organizationalOrgan,
+                'organizationUnit': organizationalMode,
+                'winBiddingUnit': '',
+                'startTime': '',
+                'endTime': ''}
+
+        token = 'Bearer ' + self.login('ymabc','123456')['data']['token']
+        headers={}
+        headers['Authorization'] = token
+
+        req_list=[
+            grequests.get(ymjt.ym_url+ymjt.Record_plan_view+parms+organizationalType1+times, headers=headers),
+            grequests.get(ymjt.ym_url + ymjt.Project_record_view + parms + organizationalType1 + times, headers=headers),
+            grequests.post(ymjt.ym_url + ymjt.Controlprice_record_view, headers=headers,data=data),
+            grequests.post(ymjt.ym_url + ymjt.acceptance_record_view,headers=headers,data=data1),
+        ]
+
+        res_list = grequests.map(req_list)
+        return res_list
+
+
+    def to_do_list(self,pageNum,pageSize,templateType=None,organizationalType=None,
+                   organizationalMode=None,capitalSource=None):
+        """待办事项，已办事项"""
+        pq=quote('":"','utf-8')
+        parms=f"?isWait=true&pageNum={pageNum}&pageSize={pageSize}&_={int(time.mktime(datetime.datetime.now().timetuple()) * 1000)}"
+        organizationalType1=f'&keyword=%25&templateType={templateType}&organizationalType{pq}{organizationalType}&organizationalMode{pq}{organizationalMode}&capitalSource={pq}{quote(capitalSource,"utf-8")}'
+        parms1 = f"?isWait=false&pageNum={pageNum}&pageSize={pageSize}&_={int(time.mktime(datetime.datetime.now().timetuple()) * 1000)}"
+
+
+        token = 'Bearer ' + self.login('ymabc','123456')['data']['token']
+        headers={}
+        headers['Authorization'] = token
+        req_list=[
+            grequests.get(ymjt.ym_url+ymjt.to_do_list+parms+organizationalType1, headers=headers),
+            grequests.get(ymjt.ym_url + ymjt.to_do_list + parms1 + organizationalType1, headers=headers),
+        ]
+
+        res_list = grequests.map(req_list)
+        return res_list
+
+
+
+
+
+o = Oalogin()
+o.to_do_list('1','10',templateType="RecordForm",organizationalType='ENGINEERING',
+             organizationalMode='1',capitalSource='矿转产资金')
